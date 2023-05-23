@@ -1,0 +1,35 @@
+version: '3'
+
+volumes:
+  postgres_data:
+  static:
+
+services:
+
+  django_db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  taski_backend_container:
+    build: ./backend/
+    env_file: .env
+    depends_on:
+      - django_db
+    volumes:
+      - static:/backend_static
+
+  taski_frontend_container:
+    env_file: .env
+    build: ./frontend/
+    volumes:
+      - static:/frontend_static
+
+  gateway_container:
+    build: ./gateway/
+    volumes:
+      - static:/staticfiles/
+    ports:
+      - 8000:80
+
