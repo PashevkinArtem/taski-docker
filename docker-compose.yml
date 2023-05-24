@@ -23,6 +23,7 @@ services:
   taski_frontend_container:
     env_file: .env
     build: ./frontend/
+    command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
 
